@@ -13,16 +13,13 @@ class _WasteagramListState extends State<WasteagramList> {
       appBar: AppBar(
         title: Text('Wasteagram')
       ),
-      floatingActionButton: Align(
-        alignment: Alignment(0.1,1.085),
-        child: FloatingActionButton(
-          child : Icon(Icons.camera_alt),
-          onPressed: () {
-            ;
-          },
-        ),
+      floatingActionButton: FloatingActionButton(
+        child : Icon(Icons.camera_alt),
+        onPressed: () {
+          ;
+        },
       ),
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
