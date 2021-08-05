@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:wasteagram/app.dart';
 
 void main() async{
@@ -9,5 +10,6 @@ void main() async{
     DeviceOrientation.landscapeRight,
     DeviceOrientation.portraitUp,
   ]);
+  await Firebase.initializeApp();
   runApp(App());
 }
