@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
+import 'package:wasteagram/screens/new_entry_screen.dart';
 import 'package:wasteagram/screens/post_details_screen.dart';
 
 class WasteagramListScreen extends StatefulWidget {
@@ -18,8 +21,11 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child : Icon(Icons.camera_alt),
-        onPressed: () {
-          ;
+        onPressed: () async {
+          File? image = await getImage();
+          if (image != null) {  
+            displayNewEntryScreen(context: context, image: image);
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,5 +66,25 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
     return Navigator.push(context, 
       MaterialPageRoute(builder: (context) => PostDetailsScreen(foodWastePost: post)),
     );
+  }
+
+  displayNewEntryScreen({required BuildContext context, required File image}){
+    return Navigator.push(context, 
+      MaterialPageRoute(builder: (context) => NewEntryScreen(image: image,)),
+    );
+  }
+
+}
+
+Future<File?> getImage() async {
+  try{
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) {
+      return null;
+    } else {
+        return File(pickedFile.path);
+    }
+  } catch (exception) {
+      return null;
   }
 }
