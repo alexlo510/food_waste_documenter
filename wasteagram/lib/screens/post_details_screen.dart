@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:wasteagram/models/food_waste_post.dart';
 
-class PostDetailsScreen extends StatefulWidget {
+class PostDetailsScreen extends StatelessWidget {
 
-  @override
-  _PostDetailsScreenState createState() => _PostDetailsScreenState();
-}
+  final FoodWastePost foodWastePost;
 
-class _PostDetailsScreenState extends State<PostDetailsScreen> {
+  const PostDetailsScreen(
+    { Key? key,
+      required this.foodWastePost,
+    }
+  ) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Wasteagram')
       ),
-      body: Text('test'),
+      body: Column(
+        children: [
+          Text('${foodWastePost.date}'),
+        ],
+      ),
     );
   }
 }
