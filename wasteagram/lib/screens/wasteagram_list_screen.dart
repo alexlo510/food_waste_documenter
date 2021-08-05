@@ -42,20 +42,23 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
       itemBuilder: (context, index) {
         FoodWastePost post = FoodWastePost.fromJSON(snapshot.data.docs[index].data());
         return ListTile(
-          title: Text('${post.date}'),
+          title: Text(
+            '${post.date}',
+            style: Theme.of(context).textTheme.headline6,
+          ),
           trailing: Text(
             '${post.quantity}',
             style: Theme.of(context).textTheme.headline4,
           ),
-          onTap: () {displayPostDetails(context);},
+          onTap: () {displayPostDetails(context: context, post: post);},
         );
       }
     );
   }
 
-  Future<dynamic> displayPostDetails(BuildContext context){
+  Future<dynamic> displayPostDetails({required BuildContext context, required FoodWastePost post}){
     return Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => PostDetailsScreen()),
+      MaterialPageRoute(builder: (context) => PostDetailsScreen(foodWastePost: post)),
     );
   }
 }
