@@ -1,12 +1,14 @@
 class FoodWastePost{
-  String? date;
+  int? id; // remove?
+  String date;
   String? imageURL;
   int? quantity;
   double? latitude;
   double? longitude;
 
   FoodWastePost({
-    this.date,
+    this.id, // remove?
+    required this.date,
     this.imageURL,
     this.quantity,
     this.latitude,
@@ -15,6 +17,7 @@ class FoodWastePost{
 
   factory FoodWastePost.fromJSON(Map<String, dynamic> json){
     return FoodWastePost(
+      id: json['id'], //remove? 
       date: json['date'],
       imageURL: json['imageURL'],
       quantity: json['quantity'],
@@ -23,7 +26,7 @@ class FoodWastePost{
     );
   }
 
-  String toString() {
-    return 'Date: $date, ImageURL: $imageURL, Quality: $quantity, Latitude: $latitude, Longitude: $longitude';
+  String toString() { //remove id?
+    return 'ID: $id, Date: $date, ImageURL: $imageURL, Quality: $quantity, Latitude: $latitude, Longitude: $longitude';
   }
 }
