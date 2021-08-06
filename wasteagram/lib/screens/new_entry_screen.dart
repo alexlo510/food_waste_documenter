@@ -45,6 +45,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
           children: [
             Flexible(
               child: FractionallySizedBox(
+                heightFactor: 0.5,
                 widthFactor: 1,
                 child: Image.file(widget.image)
               ),
@@ -72,8 +73,9 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
 
   Widget numberOfItemsFormField({required WasteagramPostDTO wasteagramPostDTO}){
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         style: Theme.of(context).textTheme.headline5,
         autofocus: true,
         textAlign: TextAlign.center,
