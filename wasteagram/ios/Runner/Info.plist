@@ -4,6 +4,8 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Needed to Access Location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Needed to Access Location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select a photo from within the app</string>
 	<key>NSCameraUsageDescription</key>
