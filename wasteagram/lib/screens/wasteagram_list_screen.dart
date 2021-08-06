@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
@@ -49,7 +50,7 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
         FoodWastePost post = FoodWastePost.fromJSON(snapshot.data.docs[index].data());
         return ListTile(
           title: Text(
-            '${post.date}',
+            '${DateFormat('EEEE, MMMM d, yyyy').format(post.date.toDate())}',
             style: Theme.of(context).textTheme.headline6,
           ),
           trailing: Text(
