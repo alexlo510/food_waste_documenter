@@ -1,5 +1,7 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
+import 'package:wasteagram/screens/wasteagram_list_screen.dart';
 
 class PostDetailsScreen extends StatelessWidget {
 
@@ -23,9 +25,16 @@ class PostDetailsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text('${foodWastePost.date}'),
+          Text('${DateFormat('EEEE, MMMM d, yyyy').format(foodWastePost.date.toDate())}'),
+          Image.network(foodWastePost.imageURL as String),
+          Text('Items: ${foodWastePost.quantity}'),
+          Text('Location: (${foodWastePost.latitude},${foodWastePost.longitude})'),
         ],
       ),
     );
   }
 }
+
+// Future<dynamic> getImage(FoodWastePost foodWastePost) async {
+//   return await Image.network(foodWastePost.imageURL as String);
+// }
