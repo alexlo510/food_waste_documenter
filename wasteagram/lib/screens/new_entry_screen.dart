@@ -31,6 +31,15 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
         ),
         title: Text('Wasteagram')
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            uploadButton(context: context, formKey: formKey, wasteagramPostDTO: wasteagramPostDTO)
+          ]
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -41,7 +50,6 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
               ),
             ),
             newEntryForm(),
-            saveButton(context: context, formKey: formKey, wasteagramPostDTO: wasteagramPostDTO),
           ],
         ),
       ),
@@ -66,10 +74,11 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
+        style: Theme.of(context).textTheme.headline5,
         autofocus: true,
+        textAlign: TextAlign.center,
         decoration: InputDecoration(
-            labelText: 'Number Of Items',
-            border: OutlineInputBorder(),
+            hintText: 'Number of Wasted Items',
         ),
         onSaved: (value) {
           wasteagramPostDTO.quantity = int.tryParse(value as String);
@@ -79,20 +88,17 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
     );
   }
 
-  Widget saveButton({required BuildContext context, required dynamic formKey, required WasteagramPostDTO wasteagramPostDTO}) {
-    return ElevatedButton(
+  Widget uploadButton({required BuildContext context, required dynamic formKey, required WasteagramPostDTO wasteagramPostDTO}) {
+    return IconButton(
+      iconSize: 100.0,
       onPressed: () async {
         if (formKey.currentState.validate()){
           formKey.currentState.save();
           // do database work here
         }
       }, 
-      child: Text('Save'),
-      style: ElevatedButton.styleFrom(
-        primary: Colors.grey[300],
-        onPrimary: Colors.black,
-      )
+      icon: Icon(Icons.cloud_upload),
     );
   }
-  
+
 }
