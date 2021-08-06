@@ -1,5 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+//import 'package:intl/intl.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:location/location.dart';
 import 'package:wasteagram/db/wasteagram_post_dto.dart';
 
 class NewEntryScreen extends StatefulWidget {
@@ -103,10 +107,59 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
         if (formKey.currentState.validate()){
           formKey.currentState.save();
           // do database work here
+          addDateToWasteagramPostDTO(wasteagramPostDTO);
+          await addLocationToWasteagramPostDTO(wasteagramPostDTO);
+          await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
+          print(wasteagramPostDTO.toString()); // remove later
+          Navigator.of(context).pop();
         }
       }, 
       icon: Icon(Icons.cloud_upload),
     );
   }
 
+}
+
+//DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now())
+void addDateToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO){
+  wasteagramPostDTO.date = DateTime.now();
+}
+
+Future<void> addImageURLToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO, File image) async {
+  Reference storageReference =
+    FirebaseStorage.instance.ref().child(DateTime.now().toString());
+  UploadTask uploadTask = storageReference.putFile(image);
+  await uploadTask;
+  final url = await storageReference.getDownloadURL();
+  wasteagramPostDTO.imageURL = url;
+}
+
+Future<void> addLocationToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO) async {
+  try{
+    LocationData locationData;
+    var locationService = Location();
+    var _serviceEnabled = await locationService.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await locationService.requestService();
+        if (!_serviceEnabled) {
+          print('Failed to enable service. Returning.');
+          return;
+        }
+      }
+    var _permissionGranted = await locationService.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await locationService.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+          print('Location service permission not granted. Returning.');
+          return;
+        }
+      }
+    locationData = await locationService.getLocation();
+    wasteagramPostDTO.latitude = locationData.latitude;
+    wasteagramPostDTO.longitude = locationData.longitude;
+  } catch (exception) {
+    print(exception);
+    wasteagramPostDTO.latitude = null;
+    wasteagramPostDTO.longitude = null;
+  }
 }
