@@ -1,5 +1,5 @@
 class WasteagramPostDTO{
-  String? date;
+  DateTime? date;
   String? imageURL;
   int? quantity;
   double? latitude;
