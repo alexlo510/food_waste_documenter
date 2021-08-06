@@ -24,6 +24,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -40,18 +41,23 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
           ]
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Flexible(
-              child: FractionallySizedBox(
-                heightFactor: 0.5,
-                widthFactor: 1,
-                child: Image.file(widget.image)
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SafeArea(
+          child: Column(
+            children: [
+              Flexible(
+                child: FractionallySizedBox(
+                  heightFactor: 0.5,
+                  widthFactor: 1,
+                  child: Image.file(widget.image)
+                ),
               ),
-            ),
-            newEntryForm(),
-          ],
+              newEntryForm(),
+            ],
+          ),
         ),
       ),
     );
