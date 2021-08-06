@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 //import 'package:intl/intl.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:location/location.dart';
 import 'package:wasteagram/db/wasteagram_post_dto.dart';
@@ -111,6 +111,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
           await addLocationToWasteagramPostDTO(wasteagramPostDTO);
           await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
           print(wasteagramPostDTO.toString()); // remove later
+          addPostToDB(wasteagramPostDTO);
           Navigator.of(context).pop();
         }
       }, 
@@ -119,6 +120,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
   }
 
 }
+
 
 //DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now())
 void addDateToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO){
@@ -163,3 +165,14 @@ Future<void> addLocationToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO)
     wasteagramPostDTO.longitude = null;
   }
 }
+
+void addPostToDB(WasteagramPostDTO wasteagramPostDTO){
+  FirebaseFirestore.instance.collection('posts').add({
+    'date': wasteagramPostDTO.date,
+    'imageURL': wasteagramPostDTO.imageURL,
+    'quantity': wasteagramPostDTO.quantity,
+    'latitude': wasteagramPostDTO.latitude,
+    'longitude': wasteagramPostDTO.longitude,
+  });
+}
+
