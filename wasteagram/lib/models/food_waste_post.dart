@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FoodWastePost{
   int? id; // remove?
-  String date;
+  Timestamp date;
   String? imageURL;
   int? quantity;
   double? latitude;
