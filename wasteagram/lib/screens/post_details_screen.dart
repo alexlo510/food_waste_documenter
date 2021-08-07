@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:wasteagram/models/food_waste_post.dart';
-import 'package:wasteagram/screens/wasteagram_list_screen.dart';
 
 class PostDetailsScreen extends StatelessWidget {
 
@@ -23,18 +22,53 @@ class PostDetailsScreen extends StatelessWidget {
         ),
         title: Text('Wasteagram')
       ),
-      body: Column(
-        children: [
-          Text('${DateFormat('EEEE, MMMM d, yyyy').format(foodWastePost.date.toDate())}'),
-          Image.network(foodWastePost.imageURL as String),
-          Text('Items: ${foodWastePost.quantity}'),
-          Text('Location: (${foodWastePost.latitude},${foodWastePost.longitude})'),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${DateFormat('EEEE, MMM d, yyyy').format(foodWastePost.date.toDate())}',
+                  style: Theme.of(context).textTheme.headline5,
+                )
+              ],
+            ),
+            Spacer(),
+            Flexible(
+              child: FractionallySizedBox(
+                heightFactor: 2.5,
+                child: Image.network(
+                  foodWastePost.imageURL as String,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(child:CircularProgressIndicator());
+                  },
+                ),
+              ),
+            ),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Items: ${foodWastePost.quantity}',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
+            ),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Location: (${foodWastePost.latitude},${foodWastePost.longitude})',
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-// Future<dynamic> getImage(FoodWastePost foodWastePost) async {
-//   return await Image.network(foodWastePost.imageURL as String);
-// }
