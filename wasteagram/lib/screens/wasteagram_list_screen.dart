@@ -30,15 +30,17 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && snapshot.data.docs != null && snapshot.data.docs.length > 0) {
-            return foodWastePostsList(context, snapshot);
-          } else {
-            return Center(child: CircularProgressIndicator());
+      body: SafeArea(
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData && snapshot.data.docs != null && snapshot.data.docs.length > 0) {
+              return foodWastePostsList(context, snapshot);
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           }
-        }
+        ),
       ),
     );
   }
