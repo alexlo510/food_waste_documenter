@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-//import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:location/location.dart';
@@ -24,9 +23,32 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
 
   final formKey = GlobalKey<FormState>();
   final wasteagramPostDTO = WasteagramPostDTO();
+  bool loading = false;
+
+  void setLoadingState(){
+    setState(() {
+      loading = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (loading == true) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Uploading...',
+                style: Theme.of(context).textTheme.headline6
+              ),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      );
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -41,7 +63,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            uploadButton(context: context, formKey: formKey, wasteagramPostDTO: wasteagramPostDTO)
+            uploadButton(context: context, formKey: formKey, wasteagramPostDTO: wasteagramPostDTO, setLoadingState: setLoadingState)
           ]
         ),
       ),
@@ -100,13 +122,13 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
     );
   }
 
-  Widget uploadButton({required BuildContext context, required dynamic formKey, required WasteagramPostDTO wasteagramPostDTO}) {
+  Widget uploadButton({required BuildContext context, required dynamic formKey, required WasteagramPostDTO wasteagramPostDTO, required Function setLoadingState}) {
     return IconButton(
       iconSize: 100.0,
       onPressed: () async {
         if (formKey.currentState.validate()){
           formKey.currentState.save();
-          // do database work here
+          setLoadingState();
           addDateToWasteagramPostDTO(wasteagramPostDTO);
           await addLocationToWasteagramPostDTO(wasteagramPostDTO);
           await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
@@ -121,8 +143,6 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
 
 }
 
-
-//DateFormat('EEEE, MMMM d, yyyy').format(DateTime.now())
 void addDateToWasteagramPostDTO(WasteagramPostDTO wasteagramPostDTO){
   wasteagramPostDTO.date = DateTime.now();
 }
