@@ -26,8 +26,30 @@ void main() {
 
   });
 
-  test('Post created from Map with null date will fail', () {
-    final date = null;
+  test('Test that imageURL, quantity, latitude, and longitude can be null', () {
+    final date = Timestamp(1, 1);
+    final imageURL = null;
+    final quantity = null;
+    final latitude = null;
+    final longitude = null;
+
+    final foodWastePost = FoodWastePost.fromMap({
+      'date' : date,
+      'imageURL' : imageURL,
+      'quantity' : quantity,
+      'latitude' : latitude,
+      'longitude' : longitude, 
+    });
+
+    expect(foodWastePost.imageURL, isNull);
+    expect(foodWastePost.quantity, isNull);
+    expect(foodWastePost.latitude, isNull);
+    expect(foodWastePost.longitude, isNull);
+
+  });
+
+  test('Test FoodWastePost.fromMap types are expected', () {
+    final date = Timestamp(1, 1);
     final imageURL = 'https://testURL.com';
     final quantity = 1;
     final latitude = 11.1;
@@ -38,10 +60,14 @@ void main() {
       'imageURL' : imageURL,
       'quantity' : quantity,
       'latitude' : latitude,
-      'longitude' : longitude, 
+      'longitude' : longitude,
     });
 
-    expect(foodWastePost.date, throwsA(anything));
+    expect(foodWastePost.date, isInstanceOf<Timestamp>());
+    expect(foodWastePost.imageURL, isInstanceOf<String>());
+    expect(foodWastePost.quantity, isInstanceOf<int>());
+    expect(foodWastePost.latitude, isInstanceOf<double>());
+    expect(foodWastePost.longitude, isInstanceOf<double>());
 
   });
 }
