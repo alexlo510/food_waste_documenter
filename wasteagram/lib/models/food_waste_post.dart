@@ -15,13 +15,13 @@ class FoodWastePost{
     this.longitude,
   });
 
-  factory FoodWastePost.fromJSON(Map<String, dynamic> json){
+  factory FoodWastePost.fromMap(Map<String, dynamic> map){
     return FoodWastePost(
-      date: json['date'],
-      imageURL: json['imageURL'],
-      quantity: json['quantity'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      date: map['date'],
+      imageURL: map['imageURL'],
+      quantity: map['quantity'],
+      latitude: map['latitude'],
+      longitude: map['longitude'],
     );
   }
 
