@@ -20,14 +20,19 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
       appBar: AppBar(
         title: Text('Wasteagram')
       ),
-      floatingActionButton: FloatingActionButton(
-        child : Icon(Icons.camera_alt),
-        onPressed: () async {
-          File? image = await getImage();
-          if (image != null) {  
-            displayNewEntryScreen(context: context, image: image);
-          }
-        },
+      floatingActionButton: Semantics(
+        button: true,
+        enabled: true,
+        onTapHint: 'Select an image',
+        child: FloatingActionButton(
+          child : Icon(Icons.camera_alt),
+          onPressed: () async {
+            File? image = await getImage();
+            if (image != null) {  
+              displayNewEntryScreen(context: context, image: image);
+            }
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
@@ -50,16 +55,20 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
       itemCount: snapshot.data.docs.length,
       itemBuilder: (context, index) {
         FoodWastePost post = FoodWastePost.fromJSON(snapshot.data.docs[index].data());
-        return ListTile(
-          title: Text(
-            '${DateFormat('EEEE, MMMM d, yyyy').format(post.date.toDate())}',
-            style: Theme.of(context).textTheme.headline6,
+        return Semantics(
+          enabled: true,
+          onTapHint: 'Tap to see the post details',
+          child: ListTile(
+            title: Text(
+              '${DateFormat('EEEE, MMMM d, yyyy').format(post.date.toDate())}',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            trailing: Text(
+              '${post.quantity}',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            onTap: () {displayPostDetails(context: context, post: post);},
           ),
-          trailing: Text(
-            '${post.quantity}',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          onTap: () {displayPostDetails(context: context, post: post);},
         );
       }
     );

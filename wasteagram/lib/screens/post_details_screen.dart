@@ -16,9 +16,13 @@ class PostDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: Semantics(
+          button: true,
+          onTapHint: 'Tap to go to previous page',
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         title: Text('Wasteagram')
       ),
@@ -38,12 +42,16 @@ class PostDetailsScreen extends StatelessWidget {
             Flexible(
               child: FractionallySizedBox(
                 heightFactor: 2.5,
-                child: Image.network(
-                  foodWastePost.imageURL as String,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(child:CircularProgressIndicator());
-                  },
+                child: Semantics(
+                  image: true,
+                  label: 'A picture of food waste',
+                  child: Image.network(
+                    foodWastePost.imageURL as String,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(child:CircularProgressIndicator());
+                    },
+                  ),
                 ),
               ),
             ),

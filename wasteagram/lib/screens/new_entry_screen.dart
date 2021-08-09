@@ -52,9 +52,13 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: Semantics(
+          button: true,
+          onTapHint: 'Tap to go to previous page',
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         title: Text('Wasteagram')
       ),
@@ -78,7 +82,11 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
                 child: FractionallySizedBox(
                   heightFactor: 0.5,
                   widthFactor: 1,
-                  child: Image.file(widget.image)
+                  child: Semantics(
+                    image: true,
+                    label: 'A picture of food waste',
+                    child: Image.file(widget.image)
+                  )
                 ),
               ),
               newEntryForm(),
@@ -106,38 +114,48 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
   Widget numberOfItemsFormField({required WasteagramPostDTO wasteagramPostDTO}){
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: TextFormField(
-        keyboardType: TextInputType.number,
-        style: Theme.of(context).textTheme.headline5,
-        autofocus: true,
-        textAlign: TextAlign.center,
-        decoration: InputDecoration(
-            hintText: 'Number of Wasted Items',
+      child: Semantics(
+        focused: true,
+        textField: true,
+        hint: 'Enter the number of wasted items as an integer',
+        child: TextFormField(
+          keyboardType: TextInputType.number,
+          style: Theme.of(context).textTheme.headline5,
+          autofocus: true,
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+              hintText: 'Number of Wasted Items',
+          ),
+          onSaved: (value) {
+            wasteagramPostDTO.quantity = int.tryParse(value as String);
+          },
+          validator: (value) => (value!.isEmpty || int.tryParse(value) == null) ? 'Please enter an integer' :  null,
         ),
-        onSaved: (value) {
-          wasteagramPostDTO.quantity = int.tryParse(value as String);
-        },
-        validator: (value) => (value!.isEmpty || int.tryParse(value) == null) ? 'Please enter an integer' :  null,
       ),
     );
   }
 
   Widget uploadButton({required BuildContext context, required dynamic formKey, required WasteagramPostDTO wasteagramPostDTO, required Function setLoadingState}) {
-    return IconButton(
-      iconSize: 100.0,
-      onPressed: () async {
-        if (formKey.currentState.validate()){
-          formKey.currentState.save();
-          setLoadingState();
-          addDateToWasteagramPostDTO(wasteagramPostDTO);
-          await addLocationToWasteagramPostDTO(wasteagramPostDTO);
-          await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
-          print(wasteagramPostDTO.toString()); // remove later
-          addPostToDB(wasteagramPostDTO);
-          Navigator.of(context).pop();
-        }
-      }, 
-      icon: Icon(Icons.cloud_upload),
+    return Semantics(
+      button: true,
+      enabled: true,
+      onTapHint: 'upload the post to the database',
+      child: IconButton(
+        iconSize: 100.0,
+        onPressed: () async {
+          if (formKey.currentState.validate()){
+            formKey.currentState.save();
+            setLoadingState();
+            addDateToWasteagramPostDTO(wasteagramPostDTO);
+            await addLocationToWasteagramPostDTO(wasteagramPostDTO);
+            await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
+            print(wasteagramPostDTO.toString()); // remove later
+            addPostToDB(wasteagramPostDTO);
+            Navigator.of(context).pop();
+          }
+        }, 
+        icon: Icon(Icons.cloud_upload),
+      ),
     );
   }
 
