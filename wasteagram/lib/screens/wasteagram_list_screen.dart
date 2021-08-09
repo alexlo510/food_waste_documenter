@@ -54,7 +54,7 @@ class _WasteagramListScreenState extends State<WasteagramListScreen> {
     return ListView.builder(
       itemCount: snapshot.data.docs.length,
       itemBuilder: (context, index) {
-        FoodWastePost post = FoodWastePost.fromJSON(snapshot.data.docs[index].data());
+        FoodWastePost post = FoodWastePost.fromMap(snapshot.data.docs[index].data());
         return Semantics(
           enabled: true,
           onTapHint: 'Tap to see the post details',
