@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FoodWastePost{
-  int? id; // remove?
   Timestamp date;
   String? imageURL;
   int? quantity;
@@ -9,7 +8,6 @@ class FoodWastePost{
   double? longitude;
 
   FoodWastePost({
-    this.id, // remove?
     required this.date,
     this.imageURL,
     this.quantity,
@@ -19,7 +17,6 @@ class FoodWastePost{
 
   factory FoodWastePost.fromJSON(Map<String, dynamic> json){
     return FoodWastePost(
-      id: json['id'], //remove? 
       date: json['date'],
       imageURL: json['imageURL'],
       quantity: json['quantity'],
@@ -28,7 +25,7 @@ class FoodWastePost{
     );
   }
 
-  String toString() { //remove id?
-    return 'ID: $id, Date: $date, ImageURL: $imageURL, Quality: $quantity, Latitude: $latitude, Longitude: $longitude';
+  String toString() {
+    return 'Date: $date, ImageURL: $imageURL, Quality: $quantity, Latitude: $latitude, Longitude: $longitude';
   }
 }
