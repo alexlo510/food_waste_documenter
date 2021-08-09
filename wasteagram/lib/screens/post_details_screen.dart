@@ -29,54 +29,71 @@ class PostDetailsScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${DateFormat('EEEE, MMM d, yyyy').format(foodWastePost.date.toDate())}',
-                  style: Theme.of(context).textTheme.headline5,
-                )
-              ],
-            ),
+            detailsScreenDate(context),
             Spacer(),
-            Flexible(
-              child: FractionallySizedBox(
-                heightFactor: 2.5,
-                child: Semantics(
-                  image: true,
-                  label: 'A picture of food waste',
-                  child: Image.network(
-                    foodWastePost.imageURL as String,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(child:CircularProgressIndicator());
-                    },
-                  ),
-                ),
-              ),
-            ),
+            detailsScreenImage(context),
             Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Items: ${foodWastePost.quantity}',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            ),
+            detailsScreenQuantity(context),
             Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Location: (${foodWastePost.latitude},${foodWastePost.longitude})',
-                ),
-              ],
-            ),
+            detailsScreenLocation(context),
           ],
         ),
       ),
     );
   }
+
+  Widget detailsScreenDate(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '${DateFormat('EEEE, MMM d, yyyy').format(foodWastePost.date.toDate())}',
+          style: Theme.of(context).textTheme.headline5,
+        )
+      ],
+    );
+  }
+
+  Widget detailsScreenImage(BuildContext context) {
+    return Flexible(
+      child: FractionallySizedBox(
+        heightFactor: 2.5,
+        child: Semantics(
+          image: true,
+          label: 'A picture of food waste',
+          child: Image.network(
+            foodWastePost.imageURL as String,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(child:CircularProgressIndicator());
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget detailsScreenQuantity(BuildContext context){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Items: ${foodWastePost.quantity}',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      ],
+    );
+  }
+
+  Widget detailsScreenLocation(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Location: (${foodWastePost.latitude},${foodWastePost.longitude})',
+        ),
+      ],
+    );
+  }
+
 }

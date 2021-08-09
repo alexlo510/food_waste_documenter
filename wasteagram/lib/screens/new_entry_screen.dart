@@ -78,21 +78,25 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              Flexible(
-                child: FractionallySizedBox(
-                  heightFactor: 0.5,
-                  widthFactor: 1,
-                  child: Semantics(
-                    image: true,
-                    label: 'A picture of food waste',
-                    child: Image.file(widget.image)
-                  )
-                ),
-              ),
+              newEntryImage(),
               newEntryForm(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget newEntryImage(){
+    return Flexible(
+      child: FractionallySizedBox(
+        heightFactor: 0.5,
+        widthFactor: 1,
+        child: Semantics(
+          image: true,
+          label: 'A picture of food waste',
+          child: Image.file(widget.image)
+        )
       ),
     );
   }
@@ -149,7 +153,6 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
             addDateToWasteagramPostDTO(wasteagramPostDTO);
             await addLocationToWasteagramPostDTO(wasteagramPostDTO);
             await addImageURLToWasteagramPostDTO(wasteagramPostDTO, widget.image);
-            print(wasteagramPostDTO.toString()); // remove later
             addPostToDB(wasteagramPostDTO);
             Navigator.of(context).pop();
           }
